@@ -9,6 +9,6 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
             return meta.getAttribute(content); 
         }       
     }    
-    sendResponse(getMetaContentByName("modResource"));
+    sendResponse(getMetaContentByName('application-name','data-id'));
   }
 });
