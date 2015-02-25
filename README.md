@@ -3,9 +3,9 @@
 Tiny chrome extension just for quick switch between **MODX Manager** and **Website**.
 
 ### Installation
-
-* Download latest crx package from ``_build`` folder
-* Go to ``chrome://extensions``, enable **Developer mode** and load app
+#### Chrome Web Store
+*Note: Extension is unlisted. Only people with this link can see it ;)*
+* https://chrome.google.com/webstore/detail/modx-manager-switch/pchmcecidlmiajanecgkibndaoabncke
 
 ### Licence
 I welcome you to customize this according to your needs or add other language. Pull requests for any improvements would be great!
