@@ -1,3 +1,4 @@
+// Actions onClicked
 chrome.browserAction.onClicked.addListener(function(tab) {
     var tab_url = tab.url;
     var tabIndex = tab.index;
@@ -11,7 +12,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 
 
   chrome.tabs.sendMessage(tab.id, {
-      command: "getResource"      
+      command: "getManager"      
     },
     function(docid) {
  
@@ -23,12 +24,44 @@ chrome.browserAction.onClicked.addListener(function(tab) {
             chrome.browserAction.setTitle({title:"Preview MODX website"});
         } else {
             newUrl = base;
-        }
+        }        
 
-        //chrome.browserAction.setIcon ({path: 'images/icon128.png'});
         chrome.tabs.create({
             url: newUrl,
             index: tabIndex + 1
         }); 
     });
 });
+
+// Change icon onMessage
+var badge_color = [0, 0, 0, 255];
+var success_color = [95, 181, 77, 255];
+var error_color = [229, 62, 48, 255];
+
+
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        
+        if (request.published == '0') badge_color = error_color;
+        if (request.published == '1') badge_color = success_color;
+
+        var tooltip = [];
+        if (request.docid) tooltip.push('docid: ' + request.docid);
+        if (request.published) tooltip.push('published: ' + request.published);
+        if (request.editedby) tooltip.push('editedby: ' + request.editedby);
+        if (request.editedon) tooltip.push('editedon: ' + request.editedon);
+        
+       
+        chrome.browserAction.setBadgeText ({
+            text: request.published,
+            tabId: sender.tab.id
+        });
+        chrome.browserAction.setBadgeBackgroundColor({
+            color: badge_color,
+            tabId: sender.tab.id
+        });
+        chrome.browserAction.setTitle({
+            title: tooltip.join('\n'),
+            tabId: sender.tab.id
+        });
+    });
