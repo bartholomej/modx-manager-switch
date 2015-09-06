@@ -1,29 +1,26 @@
-var META_NAME = 'application-name';
-var APP_NAME = 'modxchromemanager';
-
-var meta = document.querySelector("meta[name='" + META_NAME + "'][content='" + APP_NAME + "']");
-var docid,
-    published,
-    editedon,
-    editedby;
+var META_NAME = 'queeg';
+var meta = document.querySelector("meta[name='" + META_NAME + "']");
 
 if (meta) {
-    docid = meta.getAttribute('data-id');
-    published = meta.getAttribute('data-published'),
-    editedon = meta.getAttribute('data-editedon'),
-    editedby = meta.getAttribute('data-editedby');
+    var resData = meta.getAttribute('content'),
+        resObject = '';
 
-    chrome.runtime.sendMessage({
-        "docid": docid,
-        "published": published,
-        "editedon": editedon,
-        "editedby": editedby,
-    });
+    if (resData) {
+        resObject = JSON.parse(resData);
+        chrome.runtime.sendMessage(resObject);
+    }
+
 }
 
 /* Listen for messages and get docid meta tag*/
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
     if (msg.command && (msg.command == "getManager")) {
-            sendResponse(docid);
-    }    
+        var response = '';
+
+        if (resObject) {
+            response = resObject.id;
+        }
+
+        sendResponse(response);
+    }
 });

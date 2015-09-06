@@ -1,7 +1,7 @@
 {
    "name": "MODX Manager Switch",
    "description": "Tiny extension just for quick switch between MODX Manager and Website.",
-   "version": "1.1.0",
+   "version": "1.2.0",
    "short_name": "MODX Switch",
    "author": "Lukas Bartak (bartweb.cz)",
    "permissions": [

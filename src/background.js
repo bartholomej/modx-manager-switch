@@ -10,26 +10,25 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     var uri = path[3];
     var base = protocol + '//' + host;
 
-
-  chrome.tabs.sendMessage(tab.id, {
-      command: "getManager"      
+    chrome.tabs.sendMessage(tab.id, {
+      command: "getManager"
     },
+
     function(docid) {
- 
         if (uri != 'manager') {
             newUrl = base + '/' + 'manager';
                 if (docid) {
-                    newUrl += '/?a=resource/update&id=' + docid;   
-                }            
+                    newUrl += '/?a=resource/update&id=' + docid;
+                }
             chrome.browserAction.setTitle({title:"Preview MODX website"});
         } else {
             newUrl = base;
-        }        
+        }
 
         chrome.tabs.create({
             url: newUrl,
             index: tabIndex + 1
-        }); 
+        });
     });
 });
 
@@ -41,19 +40,17 @@ var error_color = [229, 62, 48, 255];
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        
-        if (request.published == '0') badge_color = error_color;
-        if (request.published == '1') badge_color = success_color;
+
+        if (request.published === 0) { badge_color = error_color };
+        if (request.published === 1) { badge_color = success_color };
 
         var tooltip = [];
-        if (request.docid) tooltip.push('docid: ' + request.docid);
-        if (request.published) tooltip.push('published: ' + request.published);
-        if (request.editedby) tooltip.push('editedby: ' + request.editedby);
-        if (request.editedon) tooltip.push('editedon: ' + request.editedon);
-        
-       
+        for(var key in request) {
+            tooltip.push(key + ": " + request[key]);
+        }
+
         chrome.browserAction.setBadgeText ({
-            text: request.published,
+            text: request.published.toString(),
             tabId: sender.tab.id
         });
         chrome.browserAction.setBadgeBackgroundColor({
