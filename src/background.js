@@ -13,7 +13,6 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     chrome.tabs.sendMessage(tab.id, {
       command: "getManager"
     },
-
     function(docid) {
         if (uri != 'manager') {
             newUrl = base + '/' + 'manager';
@@ -33,32 +32,40 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 });
 
 chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
+    function(message, sender, sendResponse) {
 
-        if (request.published === 0) { badge_color = error_color };
-        if (request.published === 1) { badge_color = success_color };
+        // Process system object
+        if (message.system) {
+            delete message.system;
 
-        var tooltip = [];
-        for(var key in request) {
-            tooltip.push(key + ": " + request[key]);
+            if (message.published === 0) { badge_color = error_color };
+            if (message.published === 1) { badge_color = success_color };
+
+            animateFlip();
+
+            chrome.browserAction.setBadgeText ({
+                text: message.published.toString(),
+                tabId: sender.tab.id
+            });
+
+            chrome.browserAction.setBadgeBackgroundColor({
+                color: badge_color,
+                tabId: sender.tab.id
+            })
+        } else {
+            // Process content object
+            delete message.system;
+
+            var tooltip = [];
+            for(var key in message) {
+                tooltip.push(key + ": " + message[key]);
+            }
+
+            chrome.browserAction.setTitle({
+                title: tooltip.join('\n'),
+                tabId: sender.tab.id
+            });
         }
-
-        animateFlip();
-
-        chrome.browserAction.setBadgeText ({
-            text: request.published.toString(),
-            tabId: sender.tab.id
-        });
-
-        chrome.browserAction.setBadgeBackgroundColor({
-            color: badge_color,
-            tabId: sender.tab.id
-        });
-
-        chrome.browserAction.setTitle({
-            title: tooltip.join('\n'),
-            tabId: sender.tab.id
-        });
     }
 );
 

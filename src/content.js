@@ -3,13 +3,19 @@ var meta = document.querySelector("meta[name='" + META_NAME + "']");
 
 if (meta) {
     var resData = meta.getAttribute('content'),
+        sysData = meta.getAttribute('data-system'),
         resObject = '';
 
-    if (resData) {
+    if (resData && sysData) {
         resObject = JSON.parse(resData);
-        chrome.runtime.sendMessage(resObject);
-    }
+        sysObject = JSON.parse(sysData);
 
+        resObject.system = false;
+        sysObject.system = true;
+
+        chrome.runtime.sendMessage(resObject);
+        chrome.runtime.sendMessage(sysObject);
+    }
 }
 
 /* Listen for messages and get docid meta tag*/
@@ -17,8 +23,8 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
     if (msg.command && (msg.command == "getManager")) {
         var response = '';
 
-        if (resObject) {
-            response = resObject.id;
+        if (sysObject) {
+            response = sysObject.id;
         }
 
         sendResponse(response);
