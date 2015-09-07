@@ -4,7 +4,8 @@ var meta = document.querySelector("meta[name='" + META_NAME + "']");
 if (meta) {
     var resData = meta.getAttribute('content'),
         sysData = meta.getAttribute('data-system'),
-        resObject = '';
+        resObject = '',
+        sysObject = '';
 
     if (resData && sysData) {
         resObject = JSON.parse(resData);
@@ -24,7 +25,7 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
         var response = '';
 
         if (sysObject) {
-            response = sysObject.id;
+            response = sysObject;
         }
 
         sendResponse(response);

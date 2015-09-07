@@ -13,11 +13,11 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     chrome.tabs.sendMessage(tab.id, {
       command: "getManager"
     },
-    function(docid) {
+    function(sysObject) {
         if (uri != 'manager') {
-            newUrl = base + '/' + 'manager';
-                if (docid) {
-                    newUrl += '/?a=resource/update&id=' + docid;
+                if (sysObject) {
+                    newUrl = sysObject.host + sysObject.manager;
+                    newUrl += '?a=resource/update&id=' + sysObject.id;
                 }
             chrome.browserAction.setTitle({title:"Preview MODX website"});
         } else {
