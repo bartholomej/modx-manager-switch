@@ -14,14 +14,19 @@ chrome.browserAction.onClicked.addListener(function(tab) {
       command: "getManager"
     },
     function(sysObject) {
-        if (uri != 'manager') {
-                if (sysObject) {
-                    newUrl = sysObject.host + sysObject.manager;
-                    newUrl += '?a=resource/update&id=' + sysObject.id;
-                }
-            chrome.browserAction.setTitle({title:"Preview MODX website"});
+        //  if Queeg is detected, go to manager like a boss!
+        if (sysObject) {
+            newUrl = sysObject.host + sysObject.manager;
+            newUrl += '?a=resource/update&id=' + sysObject.id;
         } else {
-            newUrl = base;
+            // w/o Queeg: Just try to leave manager
+            if (uri == 'manager') {
+                newUrl = base;
+                chrome.browserAction.setTitle({title:"Preview MODX website"});
+            } else {
+                // w/o Queeg: Just try to open manager
+                newUrl = base + '/manager';
+            }
         }
 
         chrome.tabs.create({
@@ -44,7 +49,7 @@ chrome.runtime.onMessage.addListener(
             animateFlip();
 
             chrome.browserAction.setBadgeText ({
-                text: message.published.toString(),
+                text: message.id.toString(),
                 tabId: sender.tab.id
             });
 
