@@ -46,7 +46,7 @@ chrome.runtime.onMessage.addListener(
             if (message.published === 0) { badge_color = error_color };
             if (message.published === 1) { badge_color = success_color };
 
-            animateFlip();
+            animateFlip(sender.tab.id);
 
             chrome.browserAction.setBadgeText ({
                 text: message.id.toString(),
@@ -85,25 +85,28 @@ var canvas = document.getElementById('canvas');
 var icon = document.getElementById('icon');
 var canvasContext = canvas.getContext('2d');
 var rotation = 0;
+var tab;
 
-function resetIcon() {
+function resetActiveIcon(tabId) {
     chrome.browserAction.setIcon({
         path: {
             "19": "images/icon19.png",
             "38": "images/icon38.png"
-        }
+        },
+        tabId: tabId
     });
 }
 
-function animateFlip() {
+function animateFlip(tabId) {
+    tab = tabId || tab;
     rotation += 1/animationFrames;
-    drawIconAtRotation();
+    drawIconAtRotation(tab);
 
     if (rotation <= 1) {
         setTimeout(animateFlip, animationSpeed);
     } else {
         rotation = 0;
-        resetIcon();
+        resetActiveIcon(tab);
     }
 }
 
@@ -111,7 +114,7 @@ function ease(x) {
     return (1 - Math.sin(Math.PI/2 + x * Math.PI))/2;
 }
 
-function drawIconAtRotation() {
+function drawIconAtRotation(tabId) {
     canvasContext.save();
     canvasContext.clearRect(0, 0, canvas.width, canvas.height);
     canvasContext.translate(Math.ceil(canvas.width/2), Math.ceil(canvas.height/2));
@@ -119,5 +122,8 @@ function drawIconAtRotation() {
     canvasContext.drawImage(icon, -Math.ceil(canvas.width/2), -Math.ceil(canvas.height/2));
     canvasContext.restore();
 
-    chrome.browserAction.setIcon({imageData:canvasContext.getImageData(0, 0, canvas.width,canvas.height)});
+    chrome.browserAction.setIcon({
+        imageData:canvasContext.getImageData(0, 0, canvas.width,canvas.height),
+        tabId: tabId
+    });
 }
