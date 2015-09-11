@@ -4,7 +4,7 @@ Tiny chrome extension that provides a **one click** access to MODX Resources fro
 
 Queeg works together with [this MODX Extra](https://github.com/baoweb/modx-queeg) you can **easily open a resource for edititng** just by **one click** and also provides additional information about resource when you hover icon.
 
-![Screenshot](https://github.com/bartholomej/modx-manager-switch/blob/master/_asets/screenshot_chrome-page-action.png) 
+![Screenshot](https://raw.githubusercontent.com/bartholomej/modx-manager-switch/master/_assets/screenshot_chrome-page-action.png) 
 
 ### Installation
 #### Chrome Web Store
@@ -24,5 +24,9 @@ BART!
 Copyright &copy; 2015 [Bartholomej](http://github.com/bartholomej)
 
 Proudly powered by nature, tea, beer and curry ;)
+
+All contents are licensed under the [MIT license].
+
+[MIT license]: LICENSE
 
 *Created at the MODX CCC 2015 — MODX Coding Convention Cologne 2015*
