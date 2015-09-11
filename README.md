@@ -1,16 +1,28 @@
 ## MODX Manager Switch (Chrome extension)
 
-Tiny chrome extension just for quick switch between **MODX Manager** and **Website**.
+Tiny chrome extension that provides a **one click** access to MODX Resources from a website to it's manager.
+
+Queeg works together with [this MODX Extra](https://github.com/baoweb/modx-queeg) you can **easily open a resource for edititng** just by **one click** and also provides additional information about resource when you hover icon.
+
+![Screenshot](https://github.com/bartholomej/modx-manager-switch/blob/master/_asets/screenshot_chrome-page-action.png) 
 
 ### Installation
 #### Chrome Web Store
-*Note: Extension is unlisted. Only people with this link can see it ;)*
 * https://chrome.google.com/webstore/detail/modx-manager-switch/pchmcecidlmiajanecgkibndaoabncke
 
 ### Licence
 I welcome you to customize this according to your needs or add other language. Pull requests for any improvements would be great!
 
 ### Author
-BART! - https://github.com/bartholomej, http://google.com/+LukasBartak
+BART!
+
+- https://github.com/bartholomej
+- http://google.com/+LukasBartak
+
+## License
+
+Copyright &copy; 2015 [Bartholomej](http://github.com/bartholomej)
+
+Proudly powered by nature, tea, beer and curry ;)
 
 *Created at the MODX CCC 2015 — MODX Coding Convention Cologne 2015*
