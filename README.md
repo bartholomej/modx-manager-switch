@@ -1,15 +1,18 @@
-## MODX Manager Switch (Chrome extension)
+## MODX Queeg (Chrome extension)
 
-Tiny chrome extension that provides a **one click** access to MODX Resources from a website to it's manager.
+Tiny Chrome and Opera extension that provides a **one click** access to MODX Resources from a website to its manager.
 
 Queeg works together with [this MODX Extra](https://github.com/baoweb/modx-queeg) you can **easily open a resource for edititng** just by **one click** and also provides additional information about resource when you **hover icon**.
 
 ![Screenshot](https://raw.githubusercontent.com/bartholomej/modx-manager-switch/master/_assets/queeg_animation.gif) 
 
 ### Installation
-[Install extension](https://chrome.google.com/webstore/detail/modx-manager-switch/pchmcecidlmiajanecgkibndaoabncke) from Chrome Webstore
+1. Install **MODX Extra** Queeg through Package Management *(Extras → Installer → Download Extras → Queeg)*
+2. Install **Chrome extension** [MODX Queeg](https://chrome.google.com/webstore/detail/modx-manager-switch/pchmcecidlmiajanecgkibndaoabncke).
 
 ### Legend
+
+*If you want to use it like this, you have to install both [Queeg Extra](http://modx.com/extras/package/queeg) and [Queeg Chrome extension](https://chrome.google.com/webstore/detail/modx-manager-switch/pchmcecidlmiajanecgkibndaoabncke)*
 
 | Symbol  | Description | Click | Hover |
 |------|------|------|------|

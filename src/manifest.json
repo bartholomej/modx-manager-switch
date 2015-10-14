@@ -1,8 +1,8 @@
 {
-   "name": "MODX Manager Switch",
-   "description": "Tiny extension just for quick switch between MODX Manager and Website.",
-   "version": "1.2.0",
-   "short_name": "MODX Switch",
+   "name": "MODX Queeg",
+   "description": "Tiny extension that provides a one click access to MODX Resources from a website to its manager.",
+   "version": "1.2.1",
+   "short_name": "MODX Queeg",
    "author": "Lukas Bartak (bartweb.cz)",
    "permissions": [
       "tabs"
@@ -16,7 +16,7 @@
         "js":      ["content.js"]
     }],
    "browser_action": {
-      "default_title": "MODX Manager Switch",
+      "default_title": "MODX Queeg",
       "default_icon": {
          "19": "images/icon-grey19.png",
          "38": "images/icon-grey38.png"
