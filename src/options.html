@@ -33,6 +33,23 @@
       transition: background-color 0.2s linear;
       white-space: nowrap;
     }
+    .button-remove {
+      background-color: #eee;
+      background-repeat: no-repeat;
+      border-radius: 3px;
+      border: 0;
+      box-shadow: none;
+      color: #222;
+      cursor: pointer;
+      line-height: 1;
+      padding: 8px 10px;
+      transition: background-color 0.2s linear;
+      white-space: nowrap;
+    }
+    .button-remove:hover {
+      background-color: #3697cd;
+      color: #fff;
+    }
     .button-add {
       background-color: #eee;
       color: #222;
@@ -62,8 +79,19 @@
       font-size: 1rem;
       border-collapse: collapse;
     }
+    .path-table thead td {
+      font-weight: 700;
+    }
+    .path-table td a {
+      color: #3f51b5;
+    }
+    .path-table td a:hover {
+      color: #ab3254;
+    }
     .path-table td {
+      max-width: 33%;
       padding: 0.25rem 1rem;
+      word-break: break-all;
     }
     .path-table td:first-child {
       padding: 0.25rem 1rem 0.2rem 0;
@@ -93,21 +121,24 @@
   </div>
   <div class="path-table__container">
     <table id="managers-pathes" class="path-table">
-      <tbody>
-        <tr data-record="">
+      <thead>
+        <tr>
           <td>
-            <input type="text" data-name="site_url" value="https://github.com/" />
+            site url
           </td>
           <td>
-            <input type="text" data-name="manager_path" value="mishantrop" />
+            manager path
           </td>
           <td>
-            <a href="https://github.com/mishantrop" target="_blank">https://github.com/mishantrop</a>
+            link
           </td>
           <td>
-            <button>X</butoon>
+
           </td>
         </tr>
+      </thead>
+      <tbody>
+
       </tbody>
     </table>
   </div>
