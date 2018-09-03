@@ -22,6 +22,7 @@
          "38": "images/icon-grey38.png"
       }
    },
+   "options_page": "options.html",
    "icons": {
       "16": "images/icon16.png",
       "48": "images/icon48.png",

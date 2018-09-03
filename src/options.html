@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Queeg Options</title>
+  <style>
+    .container {
+      margin: 0 auto;
+      max-width: 640px;
+    }
+    .header {
+      align-items: center;
+      border-bottom: 1px solid #666;
+      display: flex;
+      margin: 0 0 1rem;
+      padding: 1rem 0;
+    }
+    .header__logo {
+      height: 50px;
+      margin: 0 1rem 0 0;
+      width: 50px;
+    }
+    .header__title {
+      font-size: 2rem;
+    }
+    .button-base {
+      background-repeat: no-repeat;
+      border-radius: 3px;
+      border: 0;
+      box-shadow: none;
+      cursor: pointer;
+      line-height: 1;
+      padding: 10px 15px;
+      transition: background-color 0.2s linear;
+      white-space: nowrap;
+    }
+    .button-add {
+      background-color: #eee;
+      color: #222;
+    }
+    .button-add:hover {
+      background-color: #3697cd;
+      color: #fff;
+    }
+    .button-save {
+      background-color: #32AB9A;
+      color: #fff;
+    }
+    .button-save:hover {
+      background-color: #2b9385;
+      background-image: linear-gradient(#2b9385, #007571);
+      box-shadow: none;
+    }
+    .buttons button {
+      margin: 0 1rem 1rem 0;
+    }
+
+    .path-table {
+      width: 100%;
+      font-size: 1rem;
+      border-collapse: collapse;
+    }
+    .path-table td {
+      padding: 0.25rem 1rem;
+    }
+    .path-table td:first-child {
+      padding: 0.25rem 1rem 0.2rem 0;
+    }
+    .path-table td:last-child {
+      padding: 0.25rem 0 0.2rem 1rem;
+    }
+    .path-table input {
+      padding: 2px 10px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header class="header">
+    <img src="/images/icon128.png" alt="MODX Queeg" class="header__logo" />
+    <span class="header__title">
+      QUEEG Options
+    </span>
+  </header>
+  <h2>Custom Manager Pathes Table</h2>
+  <div class="buttons">
+    <button id="add-record" class="button-base button-add">Add</butoon>
+    <button id="save" class="button-base button-save">Save</butoon>
+  </div>
+  <div>
+    <table id="managers-pathes" class="path-table">
+      <tr>
+        <td>
+          <input type="text" data-name="site_url" value="https://github.com/" />
+        </td>
+        <td>
+          <input type="text" data-name="manager_path" value="mishantrop" />
+        </td>
+        <td>
+          <a href="https://github.com/mishantrop" target="_blank">https://github.com/mishantrop</a>
+        </td>
+        <td>
+          <button>X</butoon>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<script src="options.js"></script>
+</body>
+</html>
