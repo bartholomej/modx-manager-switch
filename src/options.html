@@ -54,6 +54,9 @@
       margin: 0 1rem 1rem 0;
     }
 
+    .path-table__container {
+      margin: 0 0 2rem;
+    }
     .path-table {
       width: 100%;
       font-size: 1rem;
@@ -88,22 +91,24 @@
     <button id="add-record" class="button-base button-add">Add</butoon>
     <button id="save" class="button-base button-save">Save</butoon>
   </div>
-  <div>
+  <div class="path-table__container">
     <table id="managers-pathes" class="path-table">
-      <tr>
-        <td>
-          <input type="text" data-name="site_url" value="https://github.com/" />
-        </td>
-        <td>
-          <input type="text" data-name="manager_path" value="mishantrop" />
-        </td>
-        <td>
-          <a href="https://github.com/mishantrop" target="_blank">https://github.com/mishantrop</a>
-        </td>
-        <td>
-          <button>X</butoon>
-        </td>
-      </tr>
+      <tbody>
+        <tr data-record="">
+          <td>
+            <input type="text" data-name="site_url" value="https://github.com/" />
+          </td>
+          <td>
+            <input type="text" data-name="manager_path" value="mishantrop" />
+          </td>
+          <td>
+            <a href="https://github.com/mishantrop" target="_blank">https://github.com/mishantrop</a>
+          </td>
+          <td>
+            <button>X</butoon>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </div>
