@@ -1,24 +1,31 @@
 class App {
   init() {
     this.managerTable = document.getElementById('managers-paths');
+    this.buttonSave1 = document.getElementById('save');
+    this.buttonSave2 = document.getElementById('save-2');
+    this.buttonAdd1 = document.getElementById('add-record');
+    this.buttonAdd2 = document.getElementById('add-record-2');
 
-    document.getElementById('save').addEventListener('click', () => {
+    this.somethingChanged = false;
+
+    this.buttonSave1.addEventListener('click', () => {
       this.saveOptions();
     });
-    document.getElementById('add-record').addEventListener('click', () => {
-      this.insertPathsTableRow(this.managerTable, { siteUrl: '', managerPath: '' });
-    });
-    document.getElementById('save-2').addEventListener('click', () => {
+    this.buttonSave2.addEventListener('click', () => {
       this.saveOptions();
     });
-    document.getElementById('add-record-2').addEventListener('click', () => {
+    this.buttonAdd1.addEventListener('click', () => {
+      this.setSomethingChanged(true);
+      this.insertPathsTableRow(this.managerTable, { siteUrl: '', managerPath: '' });
+    });
+    this.buttonAdd2.addEventListener('click', () => {
+      this.setSomethingChanged(true);
       this.insertPathsTableRow(this.managerTable, { siteUrl: '', managerPath: '' });
     });
 
-    this.render();
+    this.initialRender();
   }
 
-  // Saves options to chrome.storage
   saveOptions() {
     this.saveOptionsManagersTable();
   }
@@ -40,6 +47,7 @@ class App {
             paths: paths,
           }, () => {
             console.log('Paths saved');
+            this.setSomethingChanged(false);
           });
         } else {
           console.log('There are no records');
@@ -61,6 +69,7 @@ class App {
     input1.type = 'text';
     input1.value = path.siteUrl;
     input1.addEventListener('input', () => {
+      this.setSomethingChanged(true);
       this.refreshFullUris(newRow);
     })
     newCell1.appendChild(input1);
@@ -72,6 +81,7 @@ class App {
     input2.type = 'text';
     input2.value = path.managerPath;
     input2.addEventListener('input', () => {
+      this.setSomethingChanged(true);
       this.refreshFullUris(newRow);
     })
     newCell2.appendChild(input2);
@@ -92,6 +102,7 @@ class App {
     buttonRemove.innerHTML = '&times;';
     buttonRemove.addEventListener('click', (e) => {
       e.target.parentNode.parentNode.remove();
+      this.setSomethingChanged(true);
     });
     newCell4.appendChild(buttonRemove);
   }
@@ -115,6 +126,17 @@ class App {
     return 0;
   }
 
+  setSomethingChanged(trueOrFalse) {
+    this.somethingChanged = !!trueOrFalse;
+    if (this.somethingChanged) {
+      this.buttonSave1.removeAttribute('disabled');
+      this.buttonSave2.removeAttribute('disabled');
+    } else {
+      this.buttonSave1.setAttribute('disabled', true);
+      this.buttonSave2.setAttribute('disabled', true);
+    }
+  }
+
   refreshFullUris(row) {
     if (row) {
       const link = row.querySelector('a');
@@ -127,7 +149,7 @@ class App {
     }
   }
 
-  renderManagersPaths() {
+  initialRenderManagersPaths() {
     if (this.managerTable) {
       chrome.storage.sync.get('paths', (result) => {
         if (result && 'paths' in result && Array.isArray(result.paths)) {
@@ -143,8 +165,9 @@ class App {
     }
   }
 
-  render() {
-    this.renderManagersPaths();
+  initialRender() {
+    this.setSomethingChanged(false);
+    this.initialRenderManagersPaths();
   }
 };
 
