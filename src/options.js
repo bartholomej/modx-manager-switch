@@ -8,6 +8,12 @@ class App {
     document.getElementById('add-record').addEventListener('click', () => {
       this.insertPathsTableRow(this.managerTable, { siteUrl: '', managerPath: '' });
     });
+    document.getElementById('save-2').addEventListener('click', () => {
+      this.saveOptions();
+    });
+    document.getElementById('add-record-2').addEventListener('click', () => {
+      this.insertPathsTableRow(this.managerTable, { siteUrl: '', managerPath: '' });
+    });
 
     this.render();
   }
@@ -82,7 +88,7 @@ class App {
     const newCell4 = newRow.insertCell(3);
     const buttonRemove = document.createElement('button');
     buttonRemove.setAttribute('type', 'button');
-    buttonRemove.className = 'button-remove';
+    buttonRemove.className = 'button-remove button-base';
     buttonRemove.innerHTML = '&times;';
     buttonRemove.addEventListener('click', (e) => {
       e.target.parentNode.parentNode.remove();
