@@ -1,6 +1,5 @@
 // Actions onClicked
 chrome.browserAction.onClicked.addListener(function(tab) {
-  console.log('click');
   const tab_url = tab.url;
   const tabIndex = tab.index;
   let newUrl;
@@ -30,7 +29,6 @@ chrome.browserAction.onClicked.addListener(function(tab) {
           });
           createTab = true;
         } else {
-          console.log('Here');
           // w/o Queeg: Just try to open manager
           const managerPath = findManagerPath(host, base, (newUrl) => {
             chrome.tabs.create({
