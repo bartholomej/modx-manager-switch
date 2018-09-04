@@ -4,51 +4,51 @@ function saveOptions() {
 }
 
 function saveOptionsManagersTable() {
-    const managerTable = document.getElementById('managers-pathes');
+    const managerTable = document.getElementById('managers-paths');
 
     if (managerTable) {
       const rows = managerTable.querySelectorAll('tr[data-record]');
       if (rows) {
-        const pathes = [];
+        const paths = [];
         [].forEach.call(rows, (row) => {
           const siteUrl = row.querySelector('input[data-name="site_url"]').value;
           const managerPath = row.querySelector('input[data-name="manager_path"]').value;
-          pathes.push({
+          paths.push({
             siteUrl: siteUrl,
             managerPath: managerPath,
           });
         });
         chrome.storage.sync.set({
-          pathes: pathes,
+          paths: paths,
         }, () => {
-          console.log('Pathes saved');
+          console.log('Paths saved');
         });
       } else {
         console.log('There are no records');
       }
     } else {
-      console.warn('manager pathes table not found');
+      console.warn('manager paths table not found');
     }
 }
 
-function renderPathesTable() {
-  const managerTable = document.getElementById('managers-pathes');
+function renderPathsTable() {
+  const managerTable = document.getElementById('managers-paths');
   if (managerTable) {
-    chrome.storage.sync.get('pathes', function(result) {
-      if (result && 'pathes' in result && Array.isArray(result.pathes)) {
-        result.pathes.forEach((path) => {
-          insertPathesTableRow(managerTable, path);
+    chrome.storage.sync.get('paths', function(result) {
+      if (result && 'paths' in result && Array.isArray(result.paths)) {
+        result.paths.forEach((path) => {
+          insertPathsTableRow(managerTable, path);
         });
       } else {
-        console.warn('Pathes not found in storage');
+        console.warn('Paths not found in storage');
       }
     });
   } else {
-    console.warn('manager pathes table not found');
+    console.warn('manager paths table not found');
   }
 }
 
-function insertPathesTableRow(managerTable, path) {
+function insertPathsTableRow(managerTable, path) {
   const tbody = managerTable ? managerTable.querySelector('tbody') : null;
   const newRow = tbody.insertRow(getRowsCount(managerTable));
   newRow.setAttribute('data-record', '');
@@ -120,13 +120,13 @@ function refreshFullUris(row) {
 }
 
 function render() {
-  renderPathesTable();
+  renderPathsTable();
 }
 
 render();
 
 document.getElementById('save').addEventListener('click', saveOptions);
 document.getElementById('add-record').addEventListener('click', () => {
-  const managerTable = document.getElementById('managers-pathes');
-  insertPathesTableRow(managerTable, { siteUrl: '', managerPath: '' });
+  const managerTable = document.getElementById('managers-paths');
+  insertPathsTableRow(managerTable, { siteUrl: '', managerPath: '' });
 });

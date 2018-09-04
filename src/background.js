@@ -60,16 +60,16 @@ function findManagerPath(hostInput, base, callbackSuccess) {
   host.replace('https://');
   host.replace('http://');
 
-  chrome.storage.sync.get('pathes', function(result) {
-    if (result && 'pathes' in result && Array.isArray(result.pathes)) {
-      result.pathes.forEach((path) => {
+  chrome.storage.sync.get('paths', function(result) {
+    if (result && 'paths' in result && Array.isArray(result.paths)) {
+      result.paths.forEach((path) => {
         if (host.indexOf(path.siteUrl) >= 0) {
           managerPath = path.managerPath;
           newUrl = base + '/' + managerPath;
         }
       });
     } else {
-      console.warn('Pathes not found in storage');
+      console.warn('Paths not found in storage');
     }
     callbackSuccess(newUrl);
   });
