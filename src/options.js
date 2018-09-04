@@ -1,8 +1,6 @@
 // Saves options to chrome.storage
 function saveOptions() {
-  console.group('saveOptions');
   saveOptionsManagersTable();
-  console.groupEnd('saveOptions');
 }
 
 function saveOptionsManagersTable() {
@@ -34,13 +32,10 @@ function saveOptionsManagersTable() {
 }
 
 function renderPathesTable() {
-  console.group('renderPathesTable');
   const managerTable = document.getElementById('managers-pathes');
   if (managerTable) {
     chrome.storage.sync.get('pathes', function(result) {
-      console.log(result);
       if (result && 'pathes' in result && Array.isArray(result.pathes)) {
-        console.log(result.pathes);
         result.pathes.forEach((path) => {
           insertPathesTableRow(managerTable, path);
         });
@@ -51,7 +46,6 @@ function renderPathesTable() {
   } else {
     console.warn('manager pathes table not found');
   }
-  console.groupEnd('renderPathesTable');
 }
 
 function insertPathesTableRow(managerTable, path) {
@@ -108,7 +102,6 @@ function generateManagerUri(siteUrl, managerPath) {
 function getRowsCount(managerTable) {
   if (managerTable) {
     const rows = managerTable.querySelectorAll('tr[data-record]');
-    console.log(rows.length);
     return rows ? rows.length : 0;
   }
   return 0;
