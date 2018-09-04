@@ -49,20 +49,23 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     });
 });
 
-function findManagerPath(hostInput, base, callbackSuccess) {
-  let host = hostInput;
+cleanProtocolEtc = (host) => {
+  return host
+    .replace('https://www.', '')
+    .replace('http://www.', '')
+    .replace('https://', '')
+    .replace('http://', '');
+}
 
+findManagerPath = (hostInput, base, callbackSuccess) => {
   let managerPath = 'manager';
   let newUrl = base + '/' + managerPath;
-
-  host.replace('https://www.');
-  host.replace('http://www.');
-  host.replace('https://');
-  host.replace('http://');
+  let host = cleanProtocolEtc(hostInput);
 
   chrome.storage.sync.get('paths', function(result) {
     if (result && 'paths' in result && Array.isArray(result.paths)) {
       result.paths.forEach((path) => {
+        path.siteUrl = cleanProtocolEtc(path.siteUrl);
         if (host.indexOf(path.siteUrl) >= 0) {
           managerPath = path.managerPath;
           newUrl = base + '/' + managerPath;
