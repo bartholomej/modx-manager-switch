@@ -78,7 +78,15 @@
       width: 100%;
     }
     .path-table thead td {
+
+    }
+    .path-table__th1 {
       font-weight: 700;
+    }
+    .path-table__th2 {
+      color: #666;
+      font-size: 0.8rem;
+      font-weight: 400;
     }
     .path-table td a {
       color: #3f51b5;
@@ -124,13 +132,16 @@
       <thead>
         <tr>
           <td>
-            site url
+            <div class="path-table__th1">Site Url</div>
+            <div class="path-table__th2">e.g. https://modx.com</div>
           </td>
           <td>
-            manager path
+            <div class="path-table__th1">Manager Path</div>
+            <div class="path-table__th2">e.g. manager or admin</div>
           </td>
           <td>
-            link
+            <div class="path-table__th1">Link</div>
+            <div class="path-table__th2">e.g. https://modx.com/manager</div>
           </td>
           <td>
 

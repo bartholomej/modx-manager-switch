@@ -32,8 +32,8 @@ class App {
             const siteUrl = row.querySelector('input[data-name="site_url"]').value;
             const managerPath = row.querySelector('input[data-name="manager_path"]').value;
             paths.push({
-              siteUrl: siteUrl,
-              managerPath: managerPath,
+              siteUrl: this.rtrim(siteUrl, '/'),
+              managerPath: managerPath.replace('/', ''),
             });
           });
           chrome.storage.sync.set({
@@ -97,7 +97,14 @@ class App {
   }
 
   generateManagerUri(siteUrl, managerPath) {
-    return siteUrl + managerPath;
+    return this.rtrim(siteUrl, '/') + '/' + managerPath.replace('/', '');
+  }
+
+  rtrim(value, char) {
+    if (value[value.length - 1] === char) {
+      return value.slice(0, -1);
+    }
+    return value;
   }
 
   getRowsCount(managerTable) {
