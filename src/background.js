@@ -1,77 +1,123 @@
 // Actions onClicked
 chrome.browserAction.onClicked.addListener(function(tab) {
-    var tab_url = tab.url;
-    var tabIndex = tab.index;
-    var newUrl;
+  const tab_url = tab.url;
+  const tabIndex = tab.index;
+  let newUrl;
 
-    var path = tab_url.split( '/' );
-    var protocol = path[0];
-    var host = path[2];
-    var uri = path[3];
-    var base = protocol + '//' + host;
+  const path = tab_url.split('/');
+  const protocol = path[0];
+  const host = path[2];
+  const uri = path[3];
+  const base = protocol + '//' + host;
 
-    chrome.tabs.sendMessage(tab.id, {
+  chrome.tabs.sendMessage(tab.id, {
       command: "getManager"
     },
     function(sysObject) {
-        //  if Queeg is detected, go to manager like a boss!
-        if (sysObject) {
-            newUrl = sysObject.host + sysObject.manager;
-            newUrl += '?a=resource/update&id=' + sysObject.id;
+      let createTab = false;
+      //  if Queeg is detected, go to manager like a boss!
+      if (sysObject) {
+        newUrl = sysObject.host + sysObject.manager;
+        newUrl += '?a=resource/update&id=' + sysObject.id;
+        createTab = true;
+      } else {
+        // w/o Queeg: Just try to leave manager
+        if (uri == 'manager') {
+          newUrl = base;
+          chrome.browserAction.setTitle({
+            title: "Preview MODX website"
+          });
+          createTab = true;
         } else {
-            // w/o Queeg: Just try to leave manager
-            if (uri == 'manager') {
-                newUrl = base;
-                chrome.browserAction.setTitle({title:"Preview MODX website"});
-            } else {
-                // w/o Queeg: Just try to open manager
-                newUrl = base + '/manager';
-            }
+          // w/o Queeg: Just try to open manager
+          const managerPath = findManagerPath(host, base, (newUrl) => {
+            chrome.tabs.create({
+                url: newUrl,
+                index: tabIndex + 1
+            });
+          });
+          // newUrl = base + '/manager';
         }
+      }
 
+      if (createTab) {
         chrome.tabs.create({
             url: newUrl,
             index: tabIndex + 1
         });
+      }
     });
 });
 
-chrome.runtime.onMessage.addListener(
-    function(message, sender, sendResponse) {
+cleanProtocolEtc = (host) => {
+  return host
+    .replace('https://www.', '')
+    .replace('http://www.', '')
+    .replace('https://', '')
+    .replace('http://', '');
+}
 
-        // Process system object
-        if (message.system) {
-            delete message.system;
+findManagerPath = (hostInput, base, callbackSuccess) => {
+  let managerPath = 'manager';
+  let newUrl = base + '/' + managerPath;
+  let host = cleanProtocolEtc(hostInput);
 
-            if (message.published === 0) { badge_color = error_color };
-            if (message.published === 1) { badge_color = success_color };
-
-            animateFlip(sender.tab.id);
-
-            chrome.browserAction.setBadgeText ({
-                text: message.id.toString(),
-                tabId: sender.tab.id
-            });
-
-            chrome.browserAction.setBadgeBackgroundColor({
-                color: badge_color,
-                tabId: sender.tab.id
-            })
-        } else {
-            // Process content object
-            delete message.system;
-
-            var tooltip = [];
-            for(var key in message) {
-                tooltip.push(key + ": " + message[key]);
-            }
-
-            chrome.browserAction.setTitle({
-                title: tooltip.join('\n'),
-                tabId: sender.tab.id
-            });
+  chrome.storage.sync.get('paths', function(result) {
+    if (result && 'paths' in result && Array.isArray(result.paths)) {
+      result.paths.forEach((path) => {
+        path.siteUrl = cleanProtocolEtc(path.siteUrl);
+        if (host.indexOf(path.siteUrl) >= 0) {
+          managerPath = path.managerPath;
+          newUrl = base + '/' + managerPath;
         }
+      });
+    } else {
+      console.warn('Paths not found in storage');
     }
+    callbackSuccess(newUrl);
+  });
+}
+
+chrome.runtime.onMessage.addListener(
+  function(message, sender, sendResponse) {
+
+    // Process system object
+    if (message.system) {
+      delete message.system;
+
+      if (message.published === 0) {
+        badge_color = error_color
+      };
+      if (message.published === 1) {
+        badge_color = success_color
+      };
+
+      animateFlip(sender.tab.id);
+
+      chrome.browserAction.setBadgeText({
+        text: message.id.toString(),
+        tabId: sender.tab.id
+      });
+
+      chrome.browserAction.setBadgeBackgroundColor({
+        color: badge_color,
+        tabId: sender.tab.id
+      })
+    } else {
+      // Process content object
+      delete message.system;
+
+      var tooltip = [];
+      for (var key in message) {
+        tooltip.push(key + ": " + message[key]);
+      }
+
+      chrome.browserAction.setTitle({
+        title: tooltip.join('\n'),
+        tabId: sender.tab.id
+      });
+    }
+  }
 );
 
 // Change badge and icon onMessage
@@ -88,42 +134,42 @@ var rotation = 0;
 var tab;
 
 function resetActiveIcon(tabId) {
-    chrome.browserAction.setIcon({
-        path: {
-            "19": "images/icon19.png",
-            "38": "images/icon38.png"
-        },
-        tabId: tabId
-    });
+  chrome.browserAction.setIcon({
+    path: {
+      "19": "images/icon19.png",
+      "38": "images/icon38.png"
+    },
+    tabId: tabId
+  });
 }
 
 function animateFlip(tabId) {
-    tab = tabId || tab;
-    rotation += 1/animationFrames;
-    drawIconAtRotation(tab);
+  tab = tabId || tab;
+  rotation += 1 / animationFrames;
+  drawIconAtRotation(tab);
 
-    if (rotation <= 1) {
-        setTimeout(animateFlip, animationSpeed);
-    } else {
-        rotation = 0;
-        resetActiveIcon(tab);
-    }
+  if (rotation <= 1) {
+    setTimeout(animateFlip, animationSpeed);
+  } else {
+    rotation = 0;
+    resetActiveIcon(tab);
+  }
 }
 
 function ease(x) {
-    return (1 - Math.sin(Math.PI/2 + x * Math.PI))/2;
+  return (1 - Math.sin(Math.PI / 2 + x * Math.PI)) / 2;
 }
 
 function drawIconAtRotation(tabId) {
-    canvasContext.save();
-    canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-    canvasContext.translate(Math.ceil(canvas.width/2), Math.ceil(canvas.height/2));
-    canvasContext.rotate(2*Math.PI*ease(rotation));
-    canvasContext.drawImage(icon, -Math.ceil(canvas.width/2), -Math.ceil(canvas.height/2));
-    canvasContext.restore();
+  canvasContext.save();
+  canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+  canvasContext.translate(Math.ceil(canvas.width / 2), Math.ceil(canvas.height / 2));
+  canvasContext.rotate(2 * Math.PI * ease(rotation));
+  canvasContext.drawImage(icon, -Math.ceil(canvas.width / 2), -Math.ceil(canvas.height / 2));
+  canvasContext.restore();
 
-    chrome.browserAction.setIcon({
-        imageData:canvasContext.getImageData(0, 0, canvas.width,canvas.height),
-        tabId: tabId
-    });
+  chrome.browserAction.setIcon({
+    imageData: canvasContext.getImageData(0, 0, canvas.width, canvas.height),
+    tabId: tabId
+  });
 }

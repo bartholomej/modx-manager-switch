@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Queeg Options</title>
+  <style>
+    .container {
+      margin: 0 auto;
+      max-width: 640px;
+    }
+    .header {
+      align-items: center;
+      border-bottom: 1px solid #999;
+      display: flex;
+      margin: 0 0 1rem;
+      padding: 1rem 0;
+    }
+    .header__logo {
+      height: 50px;
+      margin: 0 1rem 0 0;
+      width: 50px;
+    }
+    .header__title {
+      font-size: 2rem;
+    }
+    .subheader {
+      font-weight: 400;
+    }
+    .button-base {
+      background-repeat: no-repeat;
+      border-radius: 3px;
+      border: 0;
+      box-shadow: none;
+      cursor: pointer;
+      line-height: 1;
+      padding: 10px 15px;
+      transition: background-color 0.2s linear;
+      white-space: nowrap;
+    }
+    .button-base:disabled {
+      cursor: default;
+    }
+    .button-remove {
+      background-color: #eee;
+      color: #222;
+      padding: 8px 10px;
+    }
+    .button-remove:hover {
+      background-color: #3697cd;
+      color: #fff;
+    }
+    .button-add {
+      background-color: #eee;
+      color: #222;
+    }
+    .button-add:hover {
+      background-color: #3697cd;
+      color: #fff;
+    }
+    .button-save {
+      background-color: #32AB9A;
+      color: #fff;
+    }
+    .button-save:disabled {
+      background-color: #ccc;
+      color: #fff;
+    }
+    .button-save:disabled:hover {
+      background-color: #ccc;
+    }
+    .button-save:hover {
+      background-color: #2b9385;
+      box-shadow: none;
+    }
+    .buttons button {
+      margin: 0 1rem 1rem 0;
+    }
+
+    .path-table__container {
+      border-bottom: 1px solid #999;
+      margin: 0;
+      padding: 0 0 2rem;
+    }
+    .path-table {
+      border-collapse: collapse;
+      font-size: 1rem;
+      margin: 0 0 1rem;
+      width: 100%;
+    }
+    .path-table thead td {
+
+    }
+    .path-table__th1 {
+      font-weight: 700;
+    }
+    .path-table__th2 {
+      color: #666;
+      font-size: 0.8rem;
+      font-weight: 400;
+    }
+    .path-table td a {
+      color: #3f51b5;
+    }
+    .path-table td a:hover {
+      color: #ab3254;
+    }
+    .path-table td {
+      max-width: 33%;
+      padding: 0.25rem 1rem;
+      word-break: break-all;
+    }
+    .path-table td:first-child {
+      padding: 0.25rem 1rem 0.2rem 0;
+    }
+    .path-table td:last-child {
+      padding: 0.25rem 0 0.2rem 1rem;
+    }
+    .path-table input {
+      border: 1px solid #999;
+      border-radius: 3px;
+      padding: 8px 10px;
+      width: 100%;
+    }
+    .footer {
+      color: #666;
+      font-size: 1rem;
+      padding: 2rem 0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header class="header">
+    <img src="/images/icon128.png" alt="MODX Queeg" class="header__logo" />
+    <span class="header__title">
+      QUEEG Options
+    </span>
+  </header>
+  <h2 class="subheader">Custom Manager Paths Table</h2>
+  <div class="path-table__container">
+    <div class="buttons">
+      <button id="add-record" class="button-base button-add">Add</button>
+      <button id="save" class="button-base button-save">Save</button>
+    </div>
+    <table id="managers-paths" class="path-table">
+      <thead>
+        <tr>
+          <td>
+            <div class="path-table__th1">Site Url</div>
+            <div class="path-table__th2">e.g. https://modx.com</div>
+          </td>
+          <td>
+            <div class="path-table__th1">Manager Path</div>
+            <div class="path-table__th2">e.g. manager or admin</div>
+          </td>
+          <td>
+            <div class="path-table__th1">Link</div>
+            <div class="path-table__th2">e.g. https://modx.com/manager</div>
+          </td>
+          <td>
+
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+    <div class="buttons">
+      <button id="add-record-2" class="button-base button-add">Add</button>
+      <button id="save-2" class="button-base button-save">Save</button>
+    </div>
+  </div>
+  <footer class="footer">
+    2015-2018
+  </footer>
+</div>
+
+<script src="options.js"></script>
+</body>
+</html>
