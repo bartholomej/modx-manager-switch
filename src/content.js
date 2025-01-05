@@ -1,15 +1,13 @@
-var META_NAME = 'queeg';
-var meta = document.querySelector("meta[name='" + META_NAME + "']");
+const META_NAME = 'queeg';
+const meta = document.querySelector(`meta[name='${META_NAME}']`);
 
 if (meta) {
-  var resData = meta.getAttribute('content'),
-    sysData = meta.getAttribute('data-system'),
-    resObject = '',
-    sysObject = '';
+  const resData = meta.getAttribute('content');
+  const sysData = meta.getAttribute('data-system');
 
   if (resData && sysData) {
-    resObject = JSON.parse(resData);
-    sysObject = JSON.parse(sysData);
+    const resObject = JSON.parse(resData);
+    const sysObject = JSON.parse(sysData);
 
     resObject.system = false;
     sysObject.system = true;
@@ -19,15 +17,8 @@ if (meta) {
   }
 }
 
-/* Listen for messages and get docid meta tag*/
-chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
-  if (msg.command && (msg.command == "getManager")) {
-    var response = '';
-
-    if (sysObject) {
-      response = sysObject;
-    }
-
-    sendResponse(response);
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  if (msg.command && msg.command === 'getManager') {
+    sendResponse(sysObject || '');
   }
 });

@@ -1,67 +1,43 @@
 chrome.action.onClicked.addListener((tab) => {
-  const tabUrl = tab.url;
-  const tabIndex = tab.index;
-  let newUrl;
-
+  const { url: tabUrl, index: tabIndex } = tab;
   const path = tabUrl.split('/');
-  const protocol = path[0];
-  const host = path[2];
-  const uri = path[3];
+  const [protocol, , host, uri] = path;
   const base = `${protocol}//${host}`;
 
-  chrome.tabs.sendMessage(tab.id, { 
-      command: 'getManager' 
-    }, 
-    (sysObject) => {
+  chrome.tabs.sendMessage(tab.id, { command: 'getManager' }, (sysObject) => {
     let createTab = false;
-    //  if Queeg is detected, go to manager like a boss!
+    let newUrl;
+
     if (sysObject) {
       newUrl = `${sysObject.host}${sysObject.manager}?a=resource/update&id=${sysObject.id}`;
       createTab = true;
-      // w/o Queeg: Just try to leave manager
     } else if (uri === 'manager') {
       newUrl = base;
-      chrome.action.setTitle({ 
-        title: 'Preview MODX website' 
-      });
+      chrome.action.setTitle({ title: 'Preview MODX website' });
       createTab = true;
     } else {
-      // w/o Queeg: Just try to open manager
       findManagerPath(host, base, (newUrl) => {
-        chrome.tabs.create({ 
-          url: newUrl, 
-          index: tabIndex + 1 
-        });
+        chrome.tabs.create({ url: newUrl, index: tabIndex + 1 });
       });
     }
 
     if (createTab) {
-      chrome.tabs.create({ 
-        url: newUrl, 
-        index: tabIndex + 1 
-      });
+      chrome.tabs.create({ url: newUrl, index: tabIndex + 1 });
     }
   });
 });
 
-const cleanProtocolEtc = (host) => {
-  return host
-    .replace('https://www.', '')
-    .replace('http://www.', '')
-    .replace('https://', '')
-    .replace('http://', '');
-}
+const cleanProtocolEtc = (host) => host.replace(/https?:\/\/(www\.)?/, '');
 
 const findManagerPath = (hostInput, base, callbackSuccess) => {
+  const host = cleanProtocolEtc(hostInput);
   let managerPath = 'manager';
   let newUrl = `${base}/${managerPath}`;
-  const host = cleanProtocolEtc(hostInput);
 
   chrome.storage.sync.get('paths', (result) => {
-    if (result && result.paths && Array.isArray(result.paths)) {
+    if (result?.paths && Array.isArray(result.paths)) {
       result.paths.forEach((path) => {
-        path.siteUrl = cleanProtocolEtc(path.siteUrl);
-        if (host.includes(path.siteUrl)) {
+        if (host.includes(cleanProtocolEtc(path.siteUrl))) {
           managerPath = path.managerPath;
           newUrl = `${base}/${managerPath}`;
         }
@@ -73,39 +49,7 @@ const findManagerPath = (hostInput, base, callbackSuccess) => {
   });
 };
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  let badgeColor;
-
-  // Process system object
-  if (message.system) {
-    delete message.system;
-
-    badgeColor = message.published === 0 ? errorColor : successColor;
-
-    animateFlip(sender.tab.id);
-
-    chrome.action.setBadgeText({ 
-      text: message.id.toString(), 
-      tabId: sender.tab.id 
-    });
-    chrome.action.setBadgeBackgroundColor({ 
-      color: badgeColor, 
-      tabId: sender.tab.id 
-    });
-  } else {
-    // Process content object
-    delete message.system;
-    const tooltip = Object.entries(message).map(([key, value]) => `${key}: ${value}`).join('\n');
-
-    chrome.action.setTitle({ 
-      title: tooltip, 
-      tabId: sender.tab.id 
-    });
-  }
-});
-
-// Change badge and icon onMessage
-const badgeColor = [0, 0, 0, 255];
+const defaultBadgeColor = [0, 0, 0, 255];
 const successColor = [95, 181, 77, 255];
 const errorColor = [229, 62, 48, 255];
 const animationFrames = 36;
@@ -113,13 +57,33 @@ const animationSpeed = 20;
 let rotation = 0;
 let tab;
 
+chrome.runtime.onMessage.addListener((message, sender) => {
+  const {
+    tab: { id: tabId },
+  } = sender;
+  const badgeColor = message.system
+    ? message.published === 0
+      ? errorColor
+      : successColor
+    : defaultBadgeColor;
+
+  if (message.system) {
+    delete message.system;
+    animateFlip(tabId);
+    chrome.action.setBadgeText({ text: message.id.toString(), tabId });
+    chrome.action.setBadgeBackgroundColor({ color: badgeColor, tabId });
+  } else {
+    const tooltip = Object.entries(message)
+      .map(([key, value]) => `${key}: ${value}`)
+      .join('\n');
+    chrome.action.setTitle({ title: tooltip, tabId });
+  }
+});
+
 const resetActiveIcon = (tabId) => {
-  chrome.action.setIcon({ 
-    path: { 
-      '19': 'images/icon19.png', 
-      '38': 'images/icon38.png' 
-    }, 
-    tabId 
+  chrome.action.setIcon({
+    path: { 19: 'images/icon19.png', 38: 'images/icon38.png' },
+    tabId,
   });
 };
 
@@ -141,8 +105,6 @@ const ease = (x) => (1 - Math.sin(Math.PI / 2 + x * Math.PI)) / 2;
 const drawIconAtRotation = async (tabId) => {
   const canvas = new OffscreenCanvas(38, 38);
   const ctx = canvas.getContext('2d');
-
-  // Fetch the image data
   const response = await fetch(chrome.runtime.getURL('images/icon38.png'));
   const blob = await response.blob();
   const bitmap = await createImageBitmap(blob);
@@ -156,6 +118,6 @@ const drawIconAtRotation = async (tabId) => {
 
   chrome.action.setIcon({
     imageData: ctx.getImageData(0, 0, canvas.width, canvas.height),
-    tabId: tabId,
+    tabId,
   });
 };
