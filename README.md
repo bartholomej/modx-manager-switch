@@ -31,7 +31,7 @@ BART!
 
 ## License
 
-Copyright &copy; 2015 [Bartholomej](http://github.com/bartholomej)
+Copyright &copy; 2015 – 2025 [Bartholomej](http://github.com/bartholomej)
 
 Proudly powered by nature, tea, beer and curry ;)
 
