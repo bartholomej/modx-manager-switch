@@ -1,5 +1,6 @@
 const META_NAME = 'queeg';
 const meta = document.querySelector(`meta[name='${META_NAME}']`);
+let sysObject = null;
 
 if (meta) {
   const resData = meta.getAttribute('content');
@@ -7,7 +8,7 @@ if (meta) {
 
   if (resData && sysData) {
     const resObject = JSON.parse(resData);
-    const sysObject = JSON.parse(sysData);
+    sysObject = JSON.parse(sysData);
 
     resObject.system = false;
     sysObject.system = true;
@@ -18,6 +19,7 @@ if (meta) {
 }
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  console.log(sysObject);
   if (msg.command && msg.command === 'getManager') {
     sendResponse(sysObject || '');
   }
