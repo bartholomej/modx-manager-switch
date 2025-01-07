@@ -19,7 +19,6 @@ if (meta) {
 }
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  console.log(sysObject);
   if (msg.command && msg.command === 'getManager') {
     sendResponse(sysObject || '');
   }
